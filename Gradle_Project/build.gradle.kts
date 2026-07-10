@@ -85,40 +85,9 @@ fun Test.useProjectTestClasses() {
 tasks.test{
     description = "Run the tests"
     include("**/OrderTestIT.class")
-    include("**/RefactoringTest.class")
+    include("**/OrderStructureTest.class")
     include("**/AllureReporting.class")
-    include("**/CatalogPOMTest.class")
-    include("**/RunCucumberTest.class")
-    include("**/RefactoringTest.class")
     maxParallelForks = 1
-}
-val catalogPOMTest by tasks.registering(Test::class) {
-    description = "Runs the CatalogPOM Test."
-    group = "verification"
-    useProjectTestClasses()
-    useJUnitPlatform()
-    include("**/CatalogPOMTest.class")
-
-    maxParallelForks = 1
-}
-
-val cucumberSmoke by tasks.registering(Test::class) {
-    description = "Runs Cucumber smoke scenarios through the Gradle JUnit Platform."
-    group = "verification"
-    useProjectTestClasses()
-    useJUnitPlatform()
-    include("**/RunCucumberTest.class")
-    systemProperty("cucumber.filter.tags", "@smoke")
-    maxParallelForks = 1
-}
-
-val w6d1StructureTest by tasks.registering(Test::class) {
-    description = "Demonstrates Gradle test forks with no-browser checks."
-    group = "verification"
-    useProjectTestClasses()
-    useJUnitPlatform()
-    include("**/RefactoringTest.class")
-    maxParallelForks = Runtime.getRuntime().availableProcessors().coerceAtMost(2)
 }
 
 val orderTest by tasks.registering(Test::class) {
