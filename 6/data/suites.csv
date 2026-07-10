@@ -1,0 +1,8 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","166","resetMakesTestOrderIndependent()","","2026-07-10","passed","2026-07-10","","com.example.Selenium.tests.OrderTestIT","com.example.Selenium.tests.OrderTestIT","resetMakesTestOrderIndependent"
+"","111","flywaySeedingReferenceDataButNoPerTestOrders()","","2026-07-10","passed","2026-07-10","","com.example.Selenium.tests.OrderTestIT","com.example.Selenium.tests.OrderTestIT","flywaySeedingReferenceDataButNoPerTestOrders"
+"","11","builderWithDynamicValues()","","2026-07-10","passed","2026-07-10","","com.example.Selenium.tests.OrderStructureTest","com.example.Selenium.tests.OrderStructureTest","builderWithDynamicValues"
+"","163","persistedBuilderDataAgainstIsolatedMysql()","","2026-07-10","passed","2026-07-10","","com.example.Selenium.tests.OrderTestIT","com.example.Selenium.tests.OrderTestIT","persistedBuilderDataAgainstIsolatedMysql"
+"Categories split flaky,test and product","46","categoriesPutGenericFlakyRules()","","2026-07-10","passed","2026-07-10","","com.example.Selenium.reporting.AllureReporting","com.example.Selenium.reporting.AllureReporting","categoriesPutGenericFlakyRules"
+"","133","countsOnlyPersistedTestOrders()","","2026-07-10","passed","2026-07-10","","com.example.Selenium.tests.OrderTestIT","com.example.Selenium.tests.OrderTestIT","countsOnlyPersistedTestOrders"
+"","2","builderBySensibleDefaults()","","2026-07-10","passed","2026-07-10","","com.example.Selenium.tests.OrderStructureTest","com.example.Selenium.tests.OrderStructureTest","builderBySensibleDefaults"
