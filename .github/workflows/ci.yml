@@ -38,11 +38,9 @@ jobs:
         working-directory: Gradle_Project
         run: chmod +x gradlew
 
-      - name: Run Integration Tests
-        working-directory: Gradle_Project
-        run: ./gradlew test \
-            -Pbrowser=chrome \
-            -Pheadless=true
+      - - name: Run Tests
+      - working-directory: Gradle_Project
+      - run: ./gradlew test -Pbrowser=chrome -Pheadless=true --stacktrace --info
 
       - name: Checkout gh-pages branch
         if: always()
