@@ -128,6 +128,9 @@ public class OrderRepository {
         }
     }
 
+    public void makeBroke() throws Exception{
+        throw new Exception();
+    }
 
     private Connection connection() throws SQLException {
         return DriverManager.getConnection(jdbcUrl, username, password);

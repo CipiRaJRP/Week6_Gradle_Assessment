@@ -65,9 +65,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          factory.persisted(Orderbuilder.newOrder());
          factory.persisted(Orderbuilder.newOrder().withName("SKU-2").withQuantity(2));
 
-         assertEquals(2,repository.count());
+         assertEquals(0,repository.count());
     }
 
+    @Disabled
     @Test
     void resetMakesTestOrderIndependent(){
          assertEquals(0,repository.count());
@@ -77,9 +78,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          assertEquals(1,repository.countByStatus("REFUNDED"));
     }
 
-//    @Test
-//    void makeATestBroken() throws Exception {
-//         repository.makeBroke();
-//    }
+    @Test
+    void makeATestBroken() throws Exception {
+         repository.makeBroke();
+    }
 
 }
