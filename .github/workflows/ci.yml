@@ -35,9 +35,9 @@ jobs:
         working-directory: Gradle_Project
         run: chmod +x gradlew
 
-      - - name: Run Tests
-      - working-directory: Gradle_Project
-      - run: ./gradlew test
+      - name: Run Tests
+        working-directory: Gradle_Project
+        run: ./gradlew test
 
       - name: Checkout gh-pages branch
         if: always()
