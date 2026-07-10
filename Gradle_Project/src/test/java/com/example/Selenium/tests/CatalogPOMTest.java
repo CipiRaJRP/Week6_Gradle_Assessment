@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 public class CatalogPOMTest extends BaseTest{
-
+    // Verify that catalog search returns only products
+// matching the user's search query.
     @Test
     @DisplayName("POM search query returns only matching catalog titles")
     void searchFindOnlyMatchiongProducts(){
@@ -26,6 +27,8 @@ public class CatalogPOMTest extends BaseTest{
         System.out.println(titles);
     }
 
+    //Verify that the user can sort the products in the catalog page based on
+    // price:Low to High
     @Test
     @DisplayName("POM sort query based on the price")
     void sortProductsBasedOnthePrice(){
@@ -38,6 +41,8 @@ public class CatalogPOMTest extends BaseTest{
 
     }
 
+    // Verify an end-to-end customer purchase journey using
+// the Page Object Model workflow.
     @Test
     @DisplayName("POM full journey")
     void full_journey_of_all_stages(){
@@ -70,6 +75,7 @@ public class CatalogPOMTest extends BaseTest{
 
     }
 
+    //Verify that the user can make a valid login
     @Test
     @DisplayName("Validate the Login")
     void loginPageValidation(){

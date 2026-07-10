@@ -73,7 +73,7 @@ tasks.withType<Test>().configureEach {
     systemProperty("cucumber.publish.quiet", "true")
     testLogging {
         events("passed", "skipped", "failed")
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
+       exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
     }
 }
 
@@ -86,6 +86,7 @@ tasks.test{
     description = "Run the tests"
     include("**/OrderTestIT.class")
     include("**/RefactoringTest.class")
+    include("**/OrderStructureTest.class")
     include("**/AllureReporting.class")
     maxParallelForks = 1
 }
