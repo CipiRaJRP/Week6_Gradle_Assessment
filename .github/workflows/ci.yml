@@ -40,7 +40,9 @@ jobs:
 
       - name: Run Integration Tests
         working-directory: Gradle_Project
-        run: ./gradlew test
+        run: ./gradlew test \
+            -Pbrowser=chrome \
+            -Pheadless=true
 
       - name: Checkout gh-pages branch
         if: always()
