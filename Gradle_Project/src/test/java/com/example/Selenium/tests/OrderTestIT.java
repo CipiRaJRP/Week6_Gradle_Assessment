@@ -82,15 +82,20 @@ import org.slf4j.LoggerFactory;
 
     // Verify that orders created through the test-data factory
 // are successfully persisted into the isolated MySQL container.
-     @Test
-    void persistedBuilderDataAgainstIsolatedMysql(){
+    @Test
+    void persistedBuilderDataAgainstIsolatedMysql() {
 
-         long id = factory.persisted(Orderbuilder.newOrder().withQuantity(3));
-         log.info("Verifying that the persisted  data created through isolated Mysql in id",id);
-         Allure.step("Verifying that the persisted  data created through isolated Mysql in id"+id);
-         assertTrue(id>0);
-         assertEquals(1,repository.count());
-     }
+        long id = factory.persisted(
+                Orderbuilder.newOrder().withQuantity(3));
+
+        Allure.step("Verify order persisted with id " + id, () -> {
+            assertTrue(id > 0);
+        });
+
+        Allure.step("Verify repository contains one order", () -> {
+            assertEquals(1, repository.count());
+        });
+    }
 
     // Verify that repository counts only the orders created during
 // the current test execution and ignores reference seed data.
