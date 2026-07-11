@@ -46,7 +46,6 @@ import org.slf4j.LoggerFactory;
      @BeforeAll
      static void migrateSchema(){
          log.info("Started the Migration");
-         Allure.step("Started the Migration");
          Flyway.configure()
                  .dataSource(mySQL.getJdbcUrl(), mySQL.getUsername(), mySQL.getPassword())
                  .locations("classpath:db/migration")
@@ -62,18 +61,14 @@ import org.slf4j.LoggerFactory;
      @BeforeEach
      void reset(){
          log.info("Reset the Tables");
-         Allure.step("Reset the Tables");
          repository.resetMutableTables();
      }
 
-@Test
- void flywaySeedingAndNoPerTestOrders(){
-    flywaySeedingReferenceDataButNoPerTestOrders();
-}
+
 
    //Verify that Seeding Reference data so that flyway
     //ensures migration and empty test orders because of no test data.
-     @Step
+     @Test
      void flywaySeedingReferenceDataButNoPerTestOrders(){
          log.info("Asserting the table count after the migration");
          assertEquals(4,repository.referenceStatusCount());
@@ -82,27 +77,20 @@ import org.slf4j.LoggerFactory;
 
     // Verify that orders created through the test-data factory
 // are successfully persisted into the isolated MySQL container.
-    @Test
-    void persistedBuilderDataAgainstIsolatedMysql() {
+     @Test
+    void persistedBuilderDataAgainstIsolatedMysql(){
 
-        long id = factory.persisted(
-                Orderbuilder.newOrder().withQuantity(3));
-
-        Allure.step("Verify order persisted with id " + id, () -> {
-            assertTrue(id > 0);
-        });
-
-        Allure.step("Verify repository contains one order", () -> {
-            assertEquals(1, repository.count());
-        });
-    }
+         long id = factory.persisted(Orderbuilder.newOrder().withQuantity(3));
+         log.info("Verifying that the persisted  data created through isolated Mysql in id",id);
+         assertTrue(id>0);
+         assertEquals(1,repository.count());
+     }
 
     // Verify that repository counts only the orders created during
 // the current test execution and ignores reference seed data.
     @Test
     void countsOnlyPersistedTestOrders(){
          log.info("Verifying the repository counts the current test data");
-        Allure.step("Verifying the repository counts the current test data");
          factory.persisted(Orderbuilder.newOrder());
          factory.persisted(Orderbuilder.newOrder().withName("SKU-2").withQuantity(2));
 
@@ -114,7 +102,6 @@ import org.slf4j.LoggerFactory;
     @Test
     void resetMakesTestOrderIndependent(){
          log.info("Verify that the reset makes the Test order Independent");
-        Allure.step("Verify that the reset makes the Test order Independent");
          assertEquals(0,repository.count());
          factory.persisted(Orderbuilder.newOrder().withRefunded());
 
