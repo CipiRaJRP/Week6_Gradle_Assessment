@@ -1,5 +1,7 @@
 package com.example.Selenium.tests;
 
+import com.example.Selenium.Record.User;
+import com.example.Selenium.data.UserFactory;
 import com.example.Selenium.pages.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -82,6 +84,8 @@ public class CatalogPOMTest extends BaseTest{
         HomePage home = new HomePage(driver);
         LoginPage login = home.open();
         String text = login.validateTitle();
+        User user = UserFactory.validUser();
+        login.signInWith(user.email(), user.password());
 
         System.out.println(text);
     }

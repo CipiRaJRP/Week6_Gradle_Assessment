@@ -1,142 +1,91 @@
 package com.example.Selenium.tests;
 
-import com.example.Selenium.pages.CartPage;
-import com.example.Selenium.pages.CatalogPage;
-import com.example.Selenium.pages.CheckoutPage;
+import com.example.Selenium.pages.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.openqa.selenium.By;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import static java.lang.reflect.Modifier.*;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 public class RefactoringTest {
+
     private static final Logger log =
             LoggerFactory.getLogger(RefactoringTest.class);
 
-    // Verify that CatalogPage follows the framework's Page Object
-// model for locator visibility and method design.
-    @Test
-    @DisplayName("Refracting Test case catalog")
-    void refractoringForCatalog(){
+    //Common Validation for All the Pages
+    private void validatePageObject(Class<?> pageClass) {
 
-         log.info("REfactoring the Catalog Page");
+        log.info("Validating Page Object: {}", pageClass.getSimpleName());
 
-        List<Field> catalogLocators = Arrays.stream(CatalogPage.class.getDeclaredFields())
+        // Validate locator fields
+        List<Field> locators = Arrays.stream(pageClass.getDeclaredFields())
                 .filter(field -> field.getType().equals(By.class))
                 .toList();
-        List<Integer> catalogModifiers = catalogLocators.stream()
-                .map(modifier -> modifier.getModifiers())
+
+        assertAll("Locator validation",
+
+                () -> assertTrue(
+                        locators.stream()
+                                .allMatch(field -> Modifier.isPrivate(field.getModifiers())),
+                        "All locators should be private"
+                ),
+
+                () -> assertTrue(
+                        locators.stream()
+                                .allMatch(field -> Modifier.isStatic(field.getModifiers())),
+                        "All locators should be static"
+                ),
+
+                () -> assertTrue(
+                        locators.stream()
+                                .allMatch(field -> Modifier.isFinal(field.getModifiers())),
+                        "All locators should be final"
+                )
+        );
+
+        // Validate fluent methods
+        List<Method> fluentMethods = Arrays.stream(pageClass.getDeclaredMethods())
+                .filter(method -> method.getReturnType().equals(pageClass))
                 .toList();
 
-        assertAll(
-                ()->assertTrue(catalogModifiers.stream()
-                        .allMatch(Private-> isPrivate(Private))),
+        assertAll("Fluent method validation",
 
-                ()-> assertTrue(catalogModifiers.stream()
-                        .allMatch(Static -> isStatic(Static))),
+                () -> assertTrue(
+                        fluentMethods.stream()
+                                .allMatch(method -> Modifier.isPublic(method.getModifiers())),
+                        "All fluent methods should be public"
+                ),
 
-                ()-> assertTrue(catalogModifiers.stream()
-                        .allMatch(Final ->isFinal(Final))));
-
-        List<Method> catalogMethodModifiers = Arrays.stream(CatalogPage.class.getMethods())
-                .filter(method -> method.getReturnType().equals(CatalogPage.class))
-                .toList();
-        for(Method method:catalogMethodModifiers){
-            System.out.println(method);
-        }
-        assertAll(
-                ()->assertTrue(catalogMethodModifiers.stream()
-                        .allMatch(Public-> isPublic(Public.getModifiers()))),
-
-                ()->assertTrue(catalogMethodModifiers.stream()
-                        .allMatch(returnType ->returnType.getReturnType().equals(CatalogPage.class)))
+                () -> assertTrue(
+                        fluentMethods.stream()
+                                .allMatch(method -> method.getReturnType().equals(pageClass)),
+                        "Methods should return the same page type"
+                )
         );
     }
 
-    // Verify that CartPage follows the framework's Page Object
-// model for locator visibility and method design.
-    @Test
-    @DisplayName("Refracting Test case cart")
-    void refractoringForCart(){
-        log.info("REfactoring the Cart Page");
+    @ParameterizedTest(name = "Validate {0}")
+    @ValueSource(classes = {
+            HomePage.class,
+            LoginPage.class,
+            CatalogPage.class,
+            ProductPage.class,
+            CartPage.class,
+            CheckoutPage.class
+    })
 
-
-        List<Field> catalogLocators = Arrays.stream(CartPage.class.getDeclaredFields())
-                .filter(field -> field.getType().equals(By.class))
-                .toList();
-        List<Integer> catalogModifiers = catalogLocators.stream()
-                .map(modifier -> modifier.getModifiers())
-                .toList();
-        assertAll(
-                ()->assertTrue(catalogModifiers.stream()
-                        .allMatch(Private-> isPrivate(Private))),
-
-                ()-> assertTrue(catalogModifiers.stream()
-                        .allMatch(Static -> isStatic(Static))),
-
-                ()-> assertTrue(catalogModifiers.stream()
-                        .allMatch(Final ->isFinal(Final))));
-
-        List<Method> catalogMethodModifiers = Arrays.stream(CartPage.class.getMethods())
-                .filter(method -> method.getReturnType().equals(CartPage.class))
-                .toList();
-
-        for(Method method:catalogMethodModifiers){
-            System.out.println(method);
-        }
-        assertAll(
-                ()->assertTrue(catalogMethodModifiers.stream()
-                        .allMatch(Public-> isPublic(Public.getModifiers()))),
-
-                ()->assertTrue(catalogMethodModifiers.stream()
-                        .allMatch(returnType ->returnType.getReturnType().equals(CatalogPage.class)))
-        );
-    }
-
-    // Verify that Checkout follows the framework's Page Object
-// model for locator visibility and method design.
-    @Test
-    @DisplayName("Refracting Test case checkout")
-    void refractoringForCheckout(){
-
-        log.info("REfactoring the Checkout Page");
-
-
-        List<Field> catalogLocators = Arrays.stream(CheckoutPage.class.getDeclaredFields())
-                .filter(field -> field.getType().equals(By.class))
-                .toList();
-        List<Integer> catalogModifiers = catalogLocators.stream()
-                .map(modifier -> modifier.getModifiers())
-                .toList();
-        //This is Field Modifier Assertion
-        assertAll(
-                ()->assertTrue(catalogModifiers.stream()
-                        .allMatch(Private-> isPrivate(Private))),
-
-                ()-> assertTrue(catalogModifiers.stream()
-                        .allMatch(Static -> isStatic(Static))),
-
-                ()-> assertTrue(catalogModifiers.stream()
-                        .allMatch(Final ->isFinal(Final))));
-
-        List<Method> catalogMethodModifiers = Arrays.stream(CheckoutPage.class.getMethods())
-                .filter(method -> method.getReturnType().equals(CheckoutPage.class))
-                .toList();
-        for(Method method:catalogMethodModifiers){
-            System.out.println(method);
-        }
-        assertAll(
-                ()->assertTrue(catalogMethodModifiers.stream()
-                        .allMatch(Public-> isPublic(Public.getModifiers()))),
-
-                ()->assertTrue(catalogMethodModifiers.stream()
-                        .allMatch(returnType ->returnType.getReturnType().equals(CheckoutPage.class)))
-        );
+    @DisplayName("Validate Page Object Standards")
+    void validateAllPageObjects(Class<?> pageClass) {
+        validatePageObject(pageClass);
     }
 }
