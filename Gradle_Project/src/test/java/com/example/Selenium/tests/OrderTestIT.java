@@ -3,6 +3,8 @@ package com.example.Selenium.tests;
 import com.example.Selenium.data.OrderFactory;
 import com.example.Selenium.data.Orderbuilder;
 import com.example.Selenium.repository.OrderRepository;
+import io.qameta.allure.Allure;
+import org.apache.xmlbeans.impl.xb.xsdschema.All;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +44,9 @@ import org.slf4j.LoggerFactory;
 // for application and test initialization.
      @BeforeAll
      static void migrateSchema(){
+         Allure.story("Order Test for Isolated MySQL Container");
          log.info("Started the Migration");
+         Allure.step("Started the Migration");
          Flyway.configure()
                  .dataSource(mySQL.getJdbcUrl(), mySQL.getUsername(), mySQL.getPassword())
                  .locations("classpath:db/migration")
@@ -58,6 +62,7 @@ import org.slf4j.LoggerFactory;
      @BeforeEach
      void reset(){
          log.info("Reset the Tables");
+         Allure.step("Reset the Tables");
          repository.resetMutableTables();
      }
 
@@ -67,6 +72,7 @@ import org.slf4j.LoggerFactory;
      @Test
      void flywaySeedingReferenceDataButNoPerTestOrders(){
          log.info("Asserting the table count after the migration");
+         Allure.step("Asserting the table count after the migration");
          assertEquals(4,repository.referenceStatusCount());
          assertEquals(0,repository.count());
      }
@@ -77,8 +83,8 @@ import org.slf4j.LoggerFactory;
     void persistedBuilderDataAgainstIsolatedMysql(){
 
          long id = factory.persisted(Orderbuilder.newOrder().withQuantity(3));
-         log.info("Verifying that the persisted  data created through isolated Mysql in id,",id);
-
+         log.info("Verifying that the persisted  data created through isolated Mysql in id",id);
+         Allure.step("Verifying that the persisted  data created through isolated Mysql in id"+id);
          assertTrue(id>0);
          assertEquals(1,repository.count());
      }
@@ -88,6 +94,7 @@ import org.slf4j.LoggerFactory;
     @Test
     void countsOnlyPersistedTestOrders(){
          log.info("Verifying the repository counts the current test data");
+        Allure.step("Verifying the repository counts the current test data");
          factory.persisted(Orderbuilder.newOrder());
          factory.persisted(Orderbuilder.newOrder().withName("SKU-2").withQuantity(2));
 
@@ -99,6 +106,7 @@ import org.slf4j.LoggerFactory;
     @Test
     void resetMakesTestOrderIndependent(){
          log.info("Verify that the reset makes the Test order Independent");
+        Allure.step("Verify that the reset makes the Test order Independent");
          assertEquals(0,repository.count());
          factory.persisted(Orderbuilder.newOrder().withRefunded());
 
